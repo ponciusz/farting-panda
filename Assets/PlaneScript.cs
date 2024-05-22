@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 public class PlaneScript : MonoBehaviour
 {
     public Rigidbody2D myRigidbody;
+    public float engineStrength = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +18,7 @@ public class PlaneScript : MonoBehaviour
     void Update()
     {
 
-        myRigidbody.velocity = Vector2.up * 10;
+        // myRigidbody.velocity = moveDirection * 1 * engineStrength;
 
     }
 }
