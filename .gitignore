@@ -1,0 +1,52 @@
+# Unity generated files
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+
+# Visual Studio / MonoDevelop generated files
+/*.booproj
+/*.csproj
+/*.sln
+/*.suo
+/*.userprefs
+/*.pidb
+/*.sln.DotSettings.user
+/*.sln.DotSettings
+
+# Unity3D generated meta files
+/*.pidb.meta
+
+# Unity3D Generated File On Crash Reports
+sysinfo.txt
+
+# Builds
+/build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Thumbnails
+/._*
+
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+# Windows thumbnail cache files
+/Thumbs.db
+/ehthumbs.db
+/ehthumbs_vista.db
+
+# Windows Installer files
+/*.msi
+/*.msm
+/*.msp
+
+# Windows shortcuts
+/*.lnk
