@@ -1,10 +1,15 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PandaScript : MonoBehaviour
 {
+
+
+    [SerializeField] private float _fartAnimDuration = 1;
+    private float _lockedTill;
+    private bool _fartTriggered;
+    private Animator _anim;
+
     public AudioSource source;
     public AudioClip fartSound;
     public Rigidbody2D myRigidbody;
@@ -37,6 +42,7 @@ public class PandaScript : MonoBehaviour
     void Start()
     {
         logic = GameObject.FindGameObjectWithTag("Logic").GetComponent<LogicScript>();
+        _anim = GetComponent<Animator>();
     }
 
 
@@ -44,7 +50,13 @@ public class PandaScript : MonoBehaviour
     void Update()
     {
 
-        // myRigidbody.velocity = moveDirection * 1 * engineStrength;
+        var state = GetState();
+
+        _fartTriggered = false;
+
+        if (state == _currentState) return;
+        _anim.CrossFade(state, 0, 0);
+        _currentState = state;
 
     }
 
@@ -53,7 +65,8 @@ public class PandaScript : MonoBehaviour
         if (pandaIsAlive)
         {
             source.PlayOneShot(fartSound);
-            Debug.Log("Fire");
+            _fartTriggered = true;
+            Debug.Log("Fly");
             myRigidbody.velocity = Vector2.up * engineStrength;
         }
 
@@ -66,4 +79,35 @@ public class PandaScript : MonoBehaviour
         logic.GameOver();
         pandaIsAlive = false;
     }
+
+
+    private int GetState()
+    {
+
+
+        if (Time.time < _lockedTill)
+        {
+            print(_lockedTill);
+            return _currentState;
+        }
+
+        // Priorities
+        if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
+        print(Time.time);
+        return Idle;
+
+
+        int LockState(int s, float t)
+        {
+
+            _lockedTill = Time.time + t;
+            return s;
+        }
+    }
+
+    private int _currentState;
+    private static readonly int Idle = Animator.StringToHash("idle_animation");
+    private static readonly int Fart = Animator.StringToHash("fart_animation");
+
+
 }
