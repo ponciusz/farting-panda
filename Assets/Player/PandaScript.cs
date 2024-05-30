@@ -1,10 +1,9 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PandaScript : MonoBehaviour
 {
-
-
     [SerializeField] private float _fartAnimDuration = 1;
     private float _lockedTill;
     private bool _fartTriggered;
@@ -16,25 +15,23 @@ public class PandaScript : MonoBehaviour
     public PlayerInputActions playerControls;
     public float engineStrength = 1;
     public LogicScript logic;
-    private InputAction fly;
+    private bool canFly = true;
     public bool pandaIsAlive = true;
 
     void Awake()
     {
         playerControls = new PlayerInputActions();
-
+        playerControls.Player.Fly.performed += Fly;
     }
 
     private void OnEnable()
     {
-        fly = playerControls.Player.Fly;
-        fly.Enable();
-        fly.performed += Fly;
+        playerControls.Player.Enable();
     }
 
     private void OnDisable()
     {
-        fly.Disable();
+        playerControls.Player.Disable();
     }
 
 
@@ -59,21 +56,28 @@ public class PandaScript : MonoBehaviour
 
     }
 
+
     private void Fly(InputAction.CallbackContext context)
     {
-        if (pandaIsAlive)
+        if (pandaIsAlive && canFly)
         {
-            source.PlayOneShot(fartSound);
-            _fartTriggered = true;
-            Debug.Log("Fly");
-            myRigidbody.velocity = Vector2.up * engineStrength;
-
+            StartCoroutine(FlyExecute());
         }
+    }
+
+    private IEnumerator FlyExecute()
+    {
+        source.PlayOneShot(fartSound);
+        _fartTriggered = true;
+        myRigidbody.velocity = Vector2.up * engineStrength;
+        canFly = false;
+        // Wait
+        yield return new WaitForSeconds(0.5f);
+        canFly = true;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        Debug.Log("Game Over");
         logic.GameOver();
         pandaIsAlive = false;
     }
@@ -81,11 +85,8 @@ public class PandaScript : MonoBehaviour
 
     private int GetState()
     {
-
-
         if (Time.time < _lockedTill)
         {
-            // print(_lockedTill);
             return _currentState;
         }
 
@@ -93,10 +94,8 @@ public class PandaScript : MonoBehaviour
         if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
         return Idle;
 
-
         int LockState(int s, float t)
         {
-
             _lockedTill = Time.time + t;
             return s;
         }
@@ -105,6 +104,5 @@ public class PandaScript : MonoBehaviour
     private int _currentState;
     private static readonly int Idle = Animator.StringToHash("idle_animation");
     private static readonly int Fart = Animator.StringToHash("fart_animation");
-
 
 }
