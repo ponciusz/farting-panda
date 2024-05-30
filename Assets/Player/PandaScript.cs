@@ -49,7 +49,6 @@ public class PandaScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         var state = GetState();
 
         _fartTriggered = false;
@@ -68,9 +67,8 @@ public class PandaScript : MonoBehaviour
             _fartTriggered = true;
             Debug.Log("Fly");
             myRigidbody.velocity = Vector2.up * engineStrength;
+
         }
-
-
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -87,13 +85,12 @@ public class PandaScript : MonoBehaviour
 
         if (Time.time < _lockedTill)
         {
-            print(_lockedTill);
+            // print(_lockedTill);
             return _currentState;
         }
 
         // Priorities
         if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
-        print(Time.time);
         return Idle;
 
 
