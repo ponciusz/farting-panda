@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PandaScript : MonoBehaviour
 {
-    [SerializeField] private float _fartAnimDuration = 0.25f;
+    private float _fartAnimDuration = 0.3f;
     private float _lockedTill;
     private bool _fartTriggered;
     private Animator _anim;
@@ -13,7 +13,7 @@ public class PandaScript : MonoBehaviour
     public AudioClip fartSound;
     public Rigidbody2D myRigidbody;
     public PlayerInputActions playerControls;
-    public float engineStrength = 1;
+    public float fartStrength = 1f;
     public LogicScript logic;
     private bool canFly = true;
     public bool pandaIsAlive = true;
@@ -87,10 +87,10 @@ public class PandaScript : MonoBehaviour
     {
         source.PlayOneShot(fartSound);
         _fartTriggered = true;
-        myRigidbody.velocity = Vector2.up * engineStrength;
+        myRigidbody.velocity = Vector2.up * fartStrength;
         canFly = false;
         // Wait
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_fartAnimDuration);
         canFly = true;
     }
 
