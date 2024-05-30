@@ -28,7 +28,6 @@ public class PipeMiddleScript : MonoBehaviour
 
             source.PlayOneShot(pointSound);
             logic.AddScore(1);
-            print("Score");
         }
     }
 }

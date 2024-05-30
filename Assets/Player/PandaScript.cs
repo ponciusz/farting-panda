@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class PandaScript : MonoBehaviour
 {
-    [SerializeField] private float _fartAnimDuration = 1;
+    [SerializeField] private float _fartAnimDuration = 0.25f;
     private float _lockedTill;
     private bool _fartTriggered;
     private Animator _anim;
@@ -56,6 +56,24 @@ public class PandaScript : MonoBehaviour
 
     }
 
+    private int GetState()
+    {
+        if (Time.time < _lockedTill)
+        {
+            return _currentState;
+        }
+
+        // Priorities
+        if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
+        return Idle;
+
+        int LockState(int s, float t)
+        {
+            _lockedTill = Time.time + t;
+            return s;
+        }
+    }
+
 
     private void Fly(InputAction.CallbackContext context)
     {
@@ -83,23 +101,7 @@ public class PandaScript : MonoBehaviour
     }
 
 
-    private int GetState()
-    {
-        if (Time.time < _lockedTill)
-        {
-            return _currentState;
-        }
 
-        // Priorities
-        if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
-        return Idle;
-
-        int LockState(int s, float t)
-        {
-            _lockedTill = Time.time + t;
-            return s;
-        }
-    }
 
     private int _currentState;
     private static readonly int Idle = Animator.StringToHash("idle_animation");
