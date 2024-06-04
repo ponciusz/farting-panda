@@ -31,6 +31,7 @@ public class LogicScript : MonoBehaviour
 
     public void GameOver()
     {
+        gameSpeed = 0;
         gameOverPanel.SetActive(true);
     }
 
