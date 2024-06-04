@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class LogicScript : MonoBehaviour
 {
 
+    public int gameSpeed = 5;
     public int playerScore;
     public Text scoreText;
     public GameObject gameOverPanel;
