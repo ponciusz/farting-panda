@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,11 +14,13 @@ public class PandaScript : MonoBehaviour
 
     public AudioSource source;
     public AudioClip fartSound;
+    public AudioClip megaFartSound;
     public Rigidbody2D myRigidbody;
     public PlayerInputActions playerControls;
     public float fartStrength = 1f;
     public LogicScript logic;
     private bool canFly = true;
+    private bool canBoostFly = true;
     public bool pandaIsAlive = true;
 
     void Awake()
@@ -82,7 +85,7 @@ public class PandaScript : MonoBehaviour
 
     private void Fly(InputAction.CallbackContext context)
     {
-        if (pandaIsAlive && canFly)
+        if (pandaIsAlive && canFly && canBoostFly)
         {
             StartCoroutine(FlyExecute());
         }
@@ -101,22 +104,24 @@ public class PandaScript : MonoBehaviour
 
     private void BoosterFart(InputAction.CallbackContext context)
     {
-        if (pandaIsAlive && canFly)
+
+        if (pandaIsAlive && canBoostFly && canFly)
         {
+            print("BoosterFartExecute");
             StartCoroutine(BoosterFartExecute());
         }
     }
 
     private IEnumerator BoosterFartExecute()
     {
-        source.PlayOneShot(fartSound);
+        source.PlayOneShot(megaFartSound);
         logic.StartBoost();
         myRigidbody.velocity = Vector2.up * fartStrength;
         _boosterFartTriggered = true;
-        canFly = false;
+        canBoostFly = false;
         // Wait
-        yield return new WaitForSeconds(_fartAnimDuration);
-        canFly = true;
+        yield return new WaitForSeconds(_boosterFartAnimDuration);
+        canBoostFly = true;
     }
 
     public void OnCollisionEnter2D(Collision2D collision)
@@ -124,9 +129,6 @@ public class PandaScript : MonoBehaviour
         logic.GameOver();
         pandaIsAlive = false;
     }
-
-
-
 
     private int _currentState;
     private static readonly int Idle = Animator.StringToHash("idle_animation");

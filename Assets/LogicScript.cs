@@ -46,10 +46,6 @@ public class LogicScript : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isBoosting && !isReturning)
-        {
-            StartBoost();
-        }
 
         if (isBoosting)
         {
