@@ -111,6 +111,7 @@ public class PandaScript : MonoBehaviour
     {
         source.PlayOneShot(fartSound);
         logic.StartBoost();
+        myRigidbody.velocity = Vector2.up * fartStrength;
         _boosterFartTriggered = true;
         canFly = false;
         // Wait

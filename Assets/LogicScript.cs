@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 public class LogicScript : MonoBehaviour
 {
 
-    public float normalSpeed = 5f;
+    public float normalSpeed = 10f;
     public float boostSpeed = 30f;
     public float boostDuration = 0.2f;
     public float transitionDuration = 0.1f;
@@ -39,7 +39,7 @@ public class LogicScript : MonoBehaviour
 
     public void GameOver()
     {
-        gameSpeed = 5;
+        gameSpeed = 0;
         gameOverPanel.SetActive(true);
     }
 
