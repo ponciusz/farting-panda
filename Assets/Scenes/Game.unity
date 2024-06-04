@@ -547,6 +547,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0dd758cd8e954c70a865a383653dd1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalSpeed: 5
+  boostSpeed: 30
+  boostDuration: 0.2
+  transitionDuration: 0.1
   gameSpeed: 10
   playerScore: 0
   scoreText: {fileID: 377052711}
@@ -1497,7 +1501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6779299103232771252, guid: a08a154abc98b40eea2fb36ca5a45d89, type: 3}
       propertyPath: m_Simulated
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6779299103232771252, guid: a08a154abc98b40eea2fb36ca5a45d89, type: 3}
       propertyPath: m_UseAutoMass

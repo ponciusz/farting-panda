@@ -5,8 +5,10 @@ using UnityEngine.InputSystem;
 public class PandaScript : MonoBehaviour
 {
     private float _fartAnimDuration = 0.3f;
+    private float _boosterFartAnimDuration = 0.3f;
     private float _lockedTill;
     private bool _fartTriggered;
+    private bool _boosterFartTriggered;
     private Animator _anim;
 
     public AudioSource source;
@@ -22,6 +24,7 @@ public class PandaScript : MonoBehaviour
     {
         playerControls = new PlayerInputActions();
         playerControls.Player.Fly.performed += Fly;
+        playerControls.Player.BoosterFart.performed += BoosterFart;
     }
 
     private void OnEnable()
@@ -49,6 +52,7 @@ public class PandaScript : MonoBehaviour
         var state = GetState();
 
         _fartTriggered = false;
+        _boosterFartTriggered = false;
 
         if (state == _currentState) return;
         _anim.CrossFade(state, 0, 0);
@@ -65,6 +69,7 @@ public class PandaScript : MonoBehaviour
 
         // Priorities
         if (_fartTriggered) return LockState(Fart, _fartAnimDuration);
+        if (_boosterFartTriggered) return LockState(BoosterFartAnim, _boosterFartAnimDuration);
         return Idle;
 
         int LockState(int s, float t)
@@ -94,6 +99,25 @@ public class PandaScript : MonoBehaviour
         canFly = true;
     }
 
+    private void BoosterFart(InputAction.CallbackContext context)
+    {
+        if (pandaIsAlive && canFly)
+        {
+            StartCoroutine(BoosterFartExecute());
+        }
+    }
+
+    private IEnumerator BoosterFartExecute()
+    {
+        source.PlayOneShot(fartSound);
+        logic.StartBoost();
+        _boosterFartTriggered = true;
+        canFly = false;
+        // Wait
+        yield return new WaitForSeconds(_fartAnimDuration);
+        canFly = true;
+    }
+
     public void OnCollisionEnter2D(Collision2D collision)
     {
         logic.GameOver();
@@ -106,5 +130,6 @@ public class PandaScript : MonoBehaviour
     private int _currentState;
     private static readonly int Idle = Animator.StringToHash("idle_animation");
     private static readonly int Fart = Animator.StringToHash("fart_animation");
+    private static readonly int BoosterFartAnim = Animator.StringToHash("mega_fart_animation");
 
 }
