@@ -5,8 +5,8 @@
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
-[Bb]uild/
-[Bb]uilds/
+/[Bb]uild/
+/[Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
 
@@ -79,9 +79,10 @@ crashlytics-build.properties
 # Burst compilation
 *_BurstDebugInformation_DoNotShip/
 
-# Build folders
+# Build folders (except docs/ for GitHub Pages)
 windows_build/
 panda.app/
+!docs/
 
 # macOS
 .DS_Store
